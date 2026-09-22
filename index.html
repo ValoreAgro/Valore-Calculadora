@@ -8,11 +8,11 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="VALORE">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>VALORE — Calculadora Financeira</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#050807;color:#f5f7f6;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;font-weight:900;letter-spacing:.08em}.sub{color:#aeb8b2;font-size:15px;margin-top:2px}
+main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;font-weight:900;letter-spacing:.08em}.brand-logo{width:190px;height:auto;display:block;max-width:100%}.sub{color:#aeb8b2;font-size:15px;margin-top:2px}
 .switch{display:grid;grid-template-columns:1fr 1fr;background:#101613;padding:4px;border-radius:13px;margin:20px 0 14px}.switch button{border:0;background:transparent;color:#f5f7f6;padding:12px;border-radius:10px;font-weight:900;font-size:18px;cursor:pointer}.switch .active{background:#1b241f;color:#ffffff;box-shadow:0 2px 8px #0008}
 .card{background:#0d1210;border:1px solid #35413b;border-radius:15px;padding:15px;margin-top:12px}.title{font-size:15px;font-weight:800;margin-bottom:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field label{display:block;font-size:12px;font-weight:700;margin:0 0 5px}.field input{width:100%;height:46px;border:1px solid #35413b;border-radius:11px;padding:8px 10px;font-size:16px;background:#171c1a;color:#f5f7f6}
@@ -22,12 +22,12 @@ main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;fo
 .results{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.r{background:#0d1210;border:1px solid #35413b;border-radius:11px;padding:11px}.r span{display:block;color:#aeb8b2;font-size:11px;margin-bottom:4px}.r strong{font-size:15px}
 .historyhead{display:flex;justify-content:space-between;align-items:center;margin:20px 0 8px}.historyhead h2{font-size:16px;margin:0}.historyhead button{border:0;background:none;color:#9aa59f;font-weight:700}
 .item{display:flex;justify-content:space-between;gap:10px;background:#0d1210;border:1px solid #35413b;border-radius:11px;padding:11px;margin-top:7px}.item small{display:block;color:#8e9a94;margin-top:3px}.error{color:#b42318;font-size:13px;min-height:18px;margin-top:7px}
-@media(max-width:430px){.grid{grid-template-columns:1fr 1fr;gap:8px}.field label{font-size:11px}.field input{height:44px;font-size:15px}.results{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.brand-logo{width:165px}.grid{grid-template-columns:1fr 1fr;gap:8px}.field label{font-size:11px}.field input{height:44px;font-size:15px}.results{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <main>
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="brand">VALORE</div><div class="sub">Calculadora Financeira</div></div><button id="topNovo" type="button" style="height:48px;padding:0 20px;border-radius:12px;border:1px solid #19a957;background:transparent;color:#f5f7f6;font-weight:800;font-size:16px">Novo</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><img src="logo-valore.png" class="brand-logo" alt="Valore Agro"><div class="sub">Calculadora Financeira</div></div><button id="topNovo" type="button" style="height:48px;padding:0 20px;border-radius:12px;border:1px solid #19a957;background:transparent;color:#f5f7f6;font-weight:800;font-size:16px">Novo</button></div>
   <div class="switch"><button id="cif" class="active">CIF</button><button id="fob">FOB</button></div>
 
   <form id="form">
