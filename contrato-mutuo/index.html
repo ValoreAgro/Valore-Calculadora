@@ -260,7 +260,8 @@ button {
                 <input
                     type="text"
                     id="mutuante_cnpj"
-                >
+                    value="42.774.277/0001-11"
+>
 
             </div>
 
@@ -272,6 +273,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_nire"
+                    value="51201848912"
                 >
 
             </div>
@@ -284,6 +286,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_logradouro"
+                    value="Rua 3"
                 >
 
             </div>
@@ -296,6 +299,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_numero"
+                    value="385"
                 >
 
             </div>
@@ -308,6 +312,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_complemento"
+                    value="Sala 001"
                 >
 
             </div>
@@ -320,6 +325,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_bairro"
+                    value="Centro Sul"
                 >
 
             </div>
@@ -332,6 +338,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_cidade"
+                    value="Sorriso"
                 >
 
             </div>
@@ -344,6 +351,7 @@ button {
                 <input
                     type="text"
                     id="mutuante_uf"
+                    value="MT"
                     maxlength="2"
                 >
 
@@ -552,6 +560,7 @@ button {
                 <input
                     type="text"
                     id="foro_cidade"
+                    value="Sorriso"
                 >
 
             </div>
@@ -564,6 +573,7 @@ button {
                 <input
                     type="text"
                     id="foro_uf"
+                    value="MT"
                     maxlength="2"
                 >
 
@@ -577,6 +587,7 @@ button {
                 <input
                     type="text"
                     id="assinatura_cidade"
+                    value="Sorriso"
                 >
 
             </div>
@@ -589,6 +600,7 @@ button {
                 <input
                     type="text"
                     id="assinatura_uf"
+                    value="MT"
                     maxlength="2"
                 >
 
@@ -641,17 +653,29 @@ button {
 
 
 function limparFormulario() {
+    const fixos = {
+        mutuante_nome: "VALORE AGRO COMERCIO DE CEREAIS AGRICOLAS LTDA",
+        mutuante_cnpj: "42.774.277/0001-11",
+        mutuante_nire: "51201848912",
+        mutuante_logradouro: "Rua 3",
+        mutuante_numero: "385",
+        mutuante_complemento: "Sala 1",
+        mutuante_bairro: "Centro-Sul",
+        mutuante_cidade: "Sorriso",
+        mutuante_uf: "MT",
+        foro_cidade: "Sorriso",
+        foro_uf: "MT",
+        assinatura_cidade: "Sorriso",
+        assinatura_uf: "MT"
+    };
 
-    const campos = document.querySelectorAll("input");
-
-    campos.forEach(function(campo) {
-
-        if (campo.id !== "mutuante_nome") {
+    document.querySelectorAll("input").forEach(function(campo) {
+        if (Object.prototype.hasOwnProperty.call(fixos, campo.id)) {
+            campo.value = fixos[campo.id];
+        } else {
             campo.value = "";
         }
-
     });
-
 }
 
 
