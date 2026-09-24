@@ -654,6 +654,46 @@ function limparFormulario() {
 }
 
 
+/* ENTER = PRÓXIMO CAMPO */
+
+const campos = Array.from(
+    document.querySelectorAll("input")
+);
+
+
+campos.forEach(function(campo, indice) {
+
+    campo.addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            const proximo = campos[indice + 1];
+
+            if (proximo) {
+
+                proximo.focus();
+
+                if (proximo.select) {
+                    proximo.select();
+                }
+
+            } else {
+
+                document
+                    .querySelector(".btn-gerar")
+                    .focus();
+
+            }
+
+        }
+
+    });
+
+});
+
+
 function gerarContrato() {
 
     alert(
@@ -664,6 +704,3 @@ function gerarContrato() {
 }
 
 </script>
-
-</body>
-</html>
