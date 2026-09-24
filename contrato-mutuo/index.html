@@ -639,29 +639,30 @@ button {
 
 <script>
 
+<script>
+
 function limparFormulario() {
 
-    document
-        .querySelectorAll("input")
-        .forEach(function(campo) {
+    const campos = document.querySelectorAll("input");
 
-            if (campo.id !== "mutuante_nome") {
-                campo.value = "";
-            }
+    campos.forEach(function(campo) {
 
-        });
+        if (campo.id !== "mutuante_nome") {
+            campo.value = "";
+        }
+
+    });
 
 }
 
 
 /* ENTER = PRÓXIMO CAMPO */
 
-const campos = Array.from(
+const camposFormulario = Array.from(
     document.querySelectorAll("input")
 );
 
-
-campos.forEach(function(campo, indice) {
+camposFormulario.forEach(function(campo, indice) {
 
     campo.addEventListener("keydown", function(event) {
 
@@ -669,7 +670,7 @@ campos.forEach(function(campo, indice) {
 
             event.preventDefault();
 
-            const proximo = campos[indice + 1];
+            const proximo = camposFormulario[indice + 1];
 
             if (proximo) {
 
@@ -694,23 +695,34 @@ campos.forEach(function(campo, indice) {
 });
 
 
+/* GERAR CONTRATO */
+
 async function gerarContrato() {
 
     const botao = document.querySelector(".btn-gerar");
 
-    const campos = Array.from(document.querySelectorAll("input"))
-        .map(function(campo) {
-            return campo.value;
-        });
+    const valores = Array.from(
+        document.querySelectorAll("input")
+    ).map(function(campo) {
+        return campo.value;
+    });
 
-    if (!campos[0].trim()) {
+
+    if (!valores[0].trim()) {
+
         alert("Informe o número do contrato.");
-        document.getElementById("numero_contrato").focus();
+
+        document
+            .getElementById("numero_contrato")
+            .focus();
+
         return;
     }
 
+
     botao.disabled = true;
     botao.textContent = "GERANDO CONTRATO...";
+
 
     try {
 
@@ -718,34 +730,41 @@ async function gerarContrato() {
             "https://valore-contratos-backend.onrender.com/api/gerar-contrato",
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
-                    campos: campos
+                    campos: valores
                 })
             }
         );
+
 
         if (!resposta.ok) {
 
             let mensagem = "Não foi possível gerar o contrato.";
 
             try {
+
                 const erro = await resposta.json();
 
                 if (erro.erro) {
+
                     mensagem = erro.erro;
 
                     if (erro.detalhe) {
                         mensagem += "\n\n" + erro.detalhe;
                     }
+
                 }
 
             } catch (e) {}
 
             throw new Error(mensagem);
         }
+
 
         const arquivo = await resposta.blob();
 
@@ -754,13 +773,22 @@ async function gerarContrato() {
         const link = document.createElement("a");
 
         link.href = url;
-        link.download = "Contrato-Mutuo-" + campos[0] + ".docm";
+
+        link.download =
+            "Contrato-Mutuo-" +
+            valores[0] +
+            ".docm";
 
         document.body.appendChild(link);
+
         link.click();
+
         link.remove();
 
-        URL.revokeObjectURL(url);
+        setTimeout(function() {
+            URL.revokeObjectURL(url);
+        }, 1000);
+
 
     } catch (erro) {
 
@@ -769,9 +797,18 @@ async function gerarContrato() {
             erro.message
         );
 
+
     } finally {
 
         botao.disabled = false;
+
         botao.textContent = "GERAR CONTRATO";
+
     }
+
 }
+
+</script>
+
+</body>
+</html>
