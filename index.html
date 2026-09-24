@@ -19,6 +19,7 @@ main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;fo
 .switch{display:grid;grid-template-columns:1fr 1fr;background:var(--panel2);padding:4px;border-radius:13px;margin:20px 0 14px}.switch button{border:0;background:transparent;color:var(--text);padding:12px;border-radius:10px;font-weight:900;font-size:18px;cursor:pointer}.switch .active{background:var(--active);color:#ffffff;box-shadow:0 2px 8px #0008}
 .card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:15px;margin-top:12px}.title{font-size:15px;font-weight:800;margin-bottom:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field label{display:block;font-size:12px;font-weight:700;margin:0 0 5px}.field input{width:100%;height:46px;border:1px solid var(--border);border-radius:11px;padding:8px 10px;font-size:16px;background:var(--input);color:var(--text)}
+.field input[readonly]{background:var(--panel2);opacity:.72;cursor:not-allowed}.field input[readonly]:focus{outline:none;box-shadow:none}
 .top-novo{height:48px;padding:0 20px;border-radius:12px;border:1px solid var(--accent);background:transparent;color:var(--text);font-weight:800;font-size:16px;cursor:pointer}.actions{display:flex;gap:10px;margin-top:14px}.actions button{height:48px;border-radius:11px;border:1px solid var(--border);background:var(--buttonBg,#fff);color:var(--buttonFg,#111);font-weight:800;padding:0 16px}.actions .calc{flex:1;background:var(--accent);color:#fff;border-color:var(--accent)}
 .mainresult{margin-top:15px;border-radius:16px;padding:17px;text-align:center;border:2px solid var(--border);background:var(--result)}.mainresult.pos{background:#0b2417;border-color:#20c46a}.mainresult.neg{background:#2a1010;border-color:#df5b5b}.mainresult.zero{background:var(--result)}
 .label{font-size:11px;font-weight:900;letter-spacing:.12em}.value{font-size:31px;font-weight:900;margin-top:5px;overflow-wrap:anywhere}
@@ -56,6 +57,7 @@ main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;fo
       <div class="field"><label>Deságio</label><input id="des" type="text" inputmode="decimal"></div>
       <div class="field"><label>Outros</label><input id="out" type="text" inputmode="decimal"></div>
       <div class="field"><label>Taxa Comissão %</label><input id="tx" type="text" value="25" inputmode="decimal"></div>
+      <div class="field"><label>Comissão/sc</label><input id="com" class="locked" type="text" value="0,00" readonly tabindex="-1" aria-label="Comissão por saca, calculada automaticamente e bloqueada"></div>
     </div></div>
 
     <div id="error" class="error"></div>
@@ -110,8 +112,9 @@ function calc(){
  return {q,pagar,receber,jf,jsc,margem,rm,com,ml,resultado:q*ml/60,tipo};
 }
 function render(x){
+ $("com").value=num(x.com);
  const cls=x.rm>0?"pos":x.rm<0?"neg":"zero";
- const rows=[["Valor a pagar",x.pagar],["Valor a receber",x.receber],["Juros financeiro",x.jf],["Valor J./Sc",x.jsc],["Margem",x.margem],["Comissão/sc",x.com],["Margem líquida/sc",x.ml],["Resultado líquido",x.resultado]];
+ const rows=[["Valor a pagar",x.pagar],["Valor a receber",x.receber],["Juros financeiro",x.jf],["Valor J./Sc",x.jsc],["Margem líquida/sc",x.ml],["Resultado líquido",x.resultado]];
  $("resultado").innerHTML=`<div class="mainresult ${cls}"><div class="label">RESULTADO MARGEM</div><div class="value">${money(x.rm)}</div></div><div class="results">${rows.map(r=>`<div class="r"><span>${r[0]}</span><strong>${money(r[1])}</strong></div>`).join("")}</div>`;
 }
 function renderHistory(){
