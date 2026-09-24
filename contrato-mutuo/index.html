@@ -698,7 +698,6 @@ async function gerarContrato() {
 
     const botao = document.querySelector(".btn-gerar");
 
-    // Pega todos os campos na mesma ordem do formulário
     const campos = Array.from(document.querySelectorAll("input"))
         .map(function(campo) {
             return campo.value;
@@ -709,9 +708,6 @@ async function gerarContrato() {
         document.getElementById("numero_contrato").focus();
         return;
     }
-
-    // Abre a nova aba imediatamente para evitar bloqueio do navegador
-    const janela = window.open("", "_blank");
 
     botao.disabled = true;
     botao.textContent = "GERANDO CONTRATO...";
@@ -746,28 +742,27 @@ async function gerarContrato() {
                     }
                 }
 
-            } catch (e) {
-                // mantém a mensagem padrão
-            }
+            } catch (e) {}
 
             throw new Error(mensagem);
         }
 
-        const pdf = await resposta.blob();
+        const arquivo = await resposta.blob();
 
-        const url = URL.createObjectURL(pdf);
+        const url = URL.createObjectURL(arquivo);
 
-        if (janela) {
-            janela.location.href = url;
-        } else {
-            window.open(url, "_blank");
-        }
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "Contrato-Mutuo-" + campos[0] + ".docm";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
 
     } catch (erro) {
-
-        if (janela) {
-            janela.close();
-        }
 
         alert(
             "Erro ao gerar o contrato:\n\n" +
