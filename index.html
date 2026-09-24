@@ -68,9 +68,29 @@ main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;fo
 </main>
 
 <script>
-const $=id=>document.getElementById(id), n=id=>{let v=parseFloat(String($(id).value).replace(",", "."));return Number.isFinite(v)&&v>=0?v:0};
+const $=id=>document.getElementById(id),
+parsePt=v=>{v=String(v).trim();if(!v)return 0;if(v.includes(","))v=v.replace(/\./g,"").replace(",",".");return parseFloat(v)},
+n=id=>{let v=parsePt($(id).value);return Number.isFinite(v)&&v>=0?v:0};
 const decimalIds=["pc","pv","jm","fr","cl","cnv","nfp","cnc","des","out","tx"];
 decimalIds.forEach(id=>{const el=$(id);el.addEventListener("blur",()=>{let v=n(id);if($(id).value!=="")$(id).value=v.toFixed(2).replace(".",",")});});
+const qty=$("q");
+qty.addEventListener("focus",()=>{if(qty.value)qty.value=qty.value.replace(/\./g,"")});
+qty.addEventListener("blur",()=>{let v=n("q");if(qty.value!=="")qty.value=new Intl.NumberFormat("pt-BR",{maximumFractionDigits:0}).format(v)});
+
+// ENTER avança para o próximo campo, na mesma ordem visual do formulário.
+// No último campo, ENTER executa o cálculo.
+const formInputs=Array.from(document.querySelectorAll("#form input"));
+formInputs.forEach((el,i)=>el.addEventListener("keydown",e=>{
+  if(e.key!=="Enter")return;
+  e.preventDefault();
+  el.blur();
+  if(i<formInputs.length-1){
+    formInputs[i+1].focus();
+    formInputs[i+1].select?.();
+  }else{
+    $("form").requestSubmit();
+  }
+}));
 let tipo="CIF", history=JSON.parse(localStorage.getItem("valoreHistory")||"[]");
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0);
 const num=v=>new Intl.NumberFormat("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v||0);
