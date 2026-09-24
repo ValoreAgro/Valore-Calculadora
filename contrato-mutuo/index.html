@@ -694,13 +694,89 @@ campos.forEach(function(campo, indice) {
 });
 
 
-function gerarContrato() {
+async function gerarContrato() {
 
-    alert(
-        "O formulário está funcionando. " +
-        "Na próxima etapa vamos conectar este botão ao modelo original do contrato."
-    );
+    const botao = document.querySelector(".btn-gerar");
 
+    // Pega todos os campos na mesma ordem do formulário
+    const campos = Array.from(document.querySelectorAll("input"))
+        .map(function(campo) {
+            return campo.value;
+        });
+
+    if (!campos[0].trim()) {
+        alert("Informe o número do contrato.");
+        document.getElementById("numero_contrato").focus();
+        return;
+    }
+
+    // Abre a nova aba imediatamente para evitar bloqueio do navegador
+    const janela = window.open("", "_blank");
+
+    botao.disabled = true;
+    botao.textContent = "GERANDO CONTRATO...";
+
+    try {
+
+        const resposta = await fetch(
+            "https://valore-contratos-backend.onrender.com/api/gerar-contrato",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    campos: campos
+                })
+            }
+        );
+
+        if (!resposta.ok) {
+
+            let mensagem = "Não foi possível gerar o contrato.";
+
+            try {
+                const erro = await resposta.json();
+
+                if (erro.erro) {
+                    mensagem = erro.erro;
+
+                    if (erro.detalhe) {
+                        mensagem += "\n\n" + erro.detalhe;
+                    }
+                }
+
+            } catch (e) {
+                // mantém a mensagem padrão
+            }
+
+            throw new Error(mensagem);
+        }
+
+        const pdf = await resposta.blob();
+
+        const url = URL.createObjectURL(pdf);
+
+        if (janela) {
+            janela.location.href = url;
+        } else {
+            window.open(url, "_blank");
+        }
+
+    } catch (erro) {
+
+        if (janela) {
+            janela.close();
+        }
+
+        alert(
+            "Erro ao gerar o contrato:\n\n" +
+            erro.message
+        );
+
+    } finally {
+
+        botao.disabled = false;
+        botao.textContent = "GERAR CONTRATO";
+    }
 }
-
-</script>
