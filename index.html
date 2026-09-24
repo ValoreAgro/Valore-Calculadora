@@ -70,7 +70,8 @@ main{max-width:760px;margin:auto;padding:18px 15px 35px}.brand{font-size:29px;fo
 <script>
 const $=id=>document.getElementById(id),
 parsePt=v=>{v=String(v).trim();if(!v)return 0;if(v.includes(","))v=v.replace(/\./g,"").replace(",",".");return parseFloat(v)},
-n=id=>{let v=parsePt($(id).value);return Number.isFinite(v)&&v>=0?v:0};
+parseQty=v=>{v=String(v).trim();if(!v)return 0;v=v.replace(/\./g,"").replace(/,/g,"");return parseFloat(v)},
+n=id=>{let v=id==="q"?parseQty($(id).value):parsePt($(id).value);return Number.isFinite(v)&&v>=0?v:0};
 const decimalIds=["pc","pv","jm","fr","cl","cnv","nfp","cnc","des","out","tx"];
 decimalIds.forEach(id=>{const el=$(id);el.addEventListener("blur",()=>{let v=n(id);if($(id).value!=="")$(id).value=v.toFixed(2).replace(".",",")});});
 const qty=$("q");
@@ -94,6 +95,7 @@ formInputs.forEach((el,i)=>el.addEventListener("keydown",e=>{
 let tipo="CIF", history=JSON.parse(localStorage.getItem("valoreHistory")||"[]");
 const money=v=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(v||0);
 const num=v=>new Intl.NumberFormat("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v||0);
+const qtyNum=v=>new Intl.NumberFormat("pt-BR",{maximumFractionDigits:0}).format(v||0);
 
 function setTipo(t){tipo=t;$("cif").classList.toggle("active",t==="CIF");$("fob").classList.toggle("active",t==="FOB")}
 $("cif").onclick=()=>setTipo("CIF");$("fob").onclick=()=>setTipo("FOB");
@@ -113,7 +115,7 @@ function render(x){
  $("resultado").innerHTML=`<div class="mainresult ${cls}"><div class="label">RESULTADO MARGEM</div><div class="value">${money(x.rm)}</div></div><div class="results">${rows.map(r=>`<div class="r"><span>${r[0]}</span><strong>${money(r[1])}</strong></div>`).join("")}</div>`;
 }
 function renderHistory(){
- $("historico").innerHTML=history.length?history.map(h=>`<div class="item"><div><b>${h.tipo} • ${num(h.q)} kg</b><small>${h.date}</small></div><b>${money(h.rm)}</b></div>`).join(""):`<div style="color:#8e9a94;font-size:13px">Nenhum cálculo salvo.</div>`;
+ $("historico").innerHTML=history.length?history.map(h=>`<div class="item"><div><b>${h.tipo} • ${qtyNum(h.q)} kg</b><small>${h.date}</small></div><b>${money(h.rm)}</b></div>`).join(""):`<div style="color:#8e9a94;font-size:13px">Nenhum cálculo salvo.</div>`;
 }
 $("form").onsubmit=e=>{e.preventDefault();$("error").textContent="";let x=calc();if(!x){$("error").textContent="Informe uma quantidade maior que zero.";return}render(x);history.unshift({tipo:x.tipo,q:x.q,rm:x.rm,date:new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"short"}).format(new Date())});history=history.slice(0,50);localStorage.setItem("valoreHistory",JSON.stringify(history));renderHistory()};
 $("novo").onclick=()=>{$("form").reset();$("tx").value=25;$("resultado").innerHTML="";$("error").textContent="";setTipo("CIF")};
