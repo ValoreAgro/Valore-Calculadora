@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Valore - Contrato de Mútuo</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+}
+
+/* CABEÇALHO */
+
+header {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 30px;
+}
+
+.logo {
+    height: 42px;
+    max-width: 190px;
+    object-fit: contain;
+}
+
+/* CONTEÚDO */
+
+.container {
+    max-width: 1050px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.titulo {
+    margin-bottom: 25px;
+}
+
+.titulo h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.titulo p {
+    margin-top: 7px;
+    color: #6b7280;
+}
+
+/* CARDS */
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.card h2 {
+    margin: 0 0 18px;
+    font-size: 18px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 12px;
+}
+
+/* CAMPOS */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.campo label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+}
+
+.campo input:focus,
+.campo select:focus {
+    outline: none;
+    border-color: #7f8c8d;
+    box-shadow: 0 0 0 2px rgba(127,140,141,0.12);
+}
+
+.largura-total {
+    grid-column: 1 / -1;
+}
+
+/* BOTÕES */
+
+.botoes {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    position: sticky;
+    bottom: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 22px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-limpar {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-gerar {
+    background: #1f2937;
+    color: white;
+}
+
+.btn-gerar:hover {
+    background: #111827;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 700px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .largura-total {
+        grid-column: auto;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .botoes {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    header {
+        padding: 15px 20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <img
+        src="../logo-valore.png"
+        alt="Valore"
+        class="logo"
+    >
+
+</header>
+
+
+<div class="container">
+
+    <div class="titulo">
+
+        <h1>Contrato de Mútuo</h1>
+
+        <p>
+            Preencha os dados abaixo para gerar o contrato.
+        </p>
+
+    </div>
+
+
+    <!-- CONTRATO -->
+
+    <div class="card">
+
+        <h2>Dados do contrato</h2>
+
+        <div class="grid">
+
+            <div class="campo">
+
+                <label>Nº do contrato</label>
+
+                <input
+                    type="text"
+                    id="numero_contrato"
+                    placeholder="Ex.: 1868/2026"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MUTUANTE -->
+
+    <div class="card">
+
+        <h2>Mutuante</h2>
+
+        <div class="grid">
+
+            <div class="campo largura-total">
+
+                <label>Razão social</label>
+
+                <input
+                    type="text"
+                    id="mutuante_nome"
+                    value="VALORE AGRO COMERCIO DE CEREAIS AGRICOLAS LTDA"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>CNPJ</label>
+
+                <input
+                    type="text"
+                    id="mutuante_cnpj"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>NIRE</label>
+
+                <input
+                    type="text"
+                    id="mutuante_nire"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Logradouro</label>
+
+                <input
+                    type="text"
+                    id="mutuante_logradouro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Número</label>
+
+                <input
+                    type="text"
+                    id="mutuante_numero"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Complemento</label>
+
+                <input
+                    type="text"
+                    id="mutuante_complemento"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Bairro</label>
+
+                <input
+                    type="text"
+                    id="mutuante_bairro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Cidade</label>
+
+                <input
+                    type="text"
+                    id="mutuante_cidade"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>UF</label>
+
+                <input
+                    type="text"
+                    id="mutuante_uf"
+                    maxlength="2"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MUTUÁRIA -->
+
+    <div class="card">
+
+        <h2>Mutuária</h2>
+
+        <div class="grid">
+
+            <div class="campo largura-total">
+
+                <label>Razão social</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_nome"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>CNPJ</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_cnpj"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Logradouro</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_logradouro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Número</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_numero"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Complemento</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_complemento"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Bairro</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_bairro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Cidade</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_cidade"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>UF</label>
+
+                <input
+                    type="text"
+                    id="mutuaria_uf"
+                    maxlength="2"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MÚTUO -->
+
+    <div class="card">
+
+        <h2>Dados do mútuo</h2>
+
+        <div class="grid">
+
+            <div class="campo">
+
+                <label>Valor do mútuo (R$)</label>
+
+                <input
+                    type="number"
+                    id="valor"
+                    step="0.01"
+                    placeholder="0,00"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Banco</label>
+
+                <input
+                    type="text"
+                    id="banco"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Agência</label>
+
+                <input
+                    type="text"
+                    id="agencia"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Conta corrente</label>
+
+                <input
+                    type="text"
+                    id="conta"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Data de vencimento</label>
+
+                <input
+                    type="date"
+                    id="vencimento"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORO -->
+
+    <div class="card">
+
+        <h2>Foro e assinatura</h2>
+
+        <div class="grid">
+
+            <div class="campo">
+
+                <label>Cidade do foro</label>
+
+                <input
+                    type="text"
+                    id="foro_cidade"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>UF do foro</label>
+
+                <input
+                    type="text"
+                    id="foro_uf"
+                    maxlength="2"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Cidade da assinatura</label>
+
+                <input
+                    type="text"
+                    id="assinatura_cidade"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>UF da assinatura</label>
+
+                <input
+                    type="text"
+                    id="assinatura_uf"
+                    maxlength="2"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Data da assinatura</label>
+
+                <input
+                    type="date"
+                    id="data_assinatura"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BOTÕES -->
+
+    <div class="botoes">
+
+        <button
+            type="button"
+            class="btn-limpar"
+            onclick="limparFormulario()"
+        >
+            LIMPAR
+        </button>
+
+
+        <button
+            type="button"
+            class="btn-gerar"
+            onclick="gerarContrato()"
+        >
+            GERAR CONTRATO
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function limparFormulario() {
+
+    document
+        .querySelectorAll("input")
+        .forEach(function(campo) {
+
+            if (campo.id !== "mutuante_nome") {
+                campo.value = "";
+            }
+
+        });
+
+}
+
+
+function gerarContrato() {
+
+    alert(
+        "O formulário está funcionando. " +
+        "Na próxima etapa vamos conectar este botão ao modelo original do contrato."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
