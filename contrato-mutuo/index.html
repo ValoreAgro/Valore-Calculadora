@@ -239,7 +239,15 @@ button {
         <h2>Mutuante</h2>
 
         <div class="grid">
+<div class="campo largura-total">
 
+    <label>Empresa cadastrada</label>
+
+    <select id="mutuante_empresa">
+        <option value="">Selecione uma empresa...</option>
+    </select>
+
+</div>
             <div class="campo largura-total">
 
                 <label>Razão social</label>
@@ -369,7 +377,16 @@ button {
         <h2>Mutuária</h2>
 
         <div class="grid">
+            <div class="campo largura-total">
 
+            <label>Empresa cadastrada</label>
+
+            <select id="mutuaria_empresa">
+            <option value="">Selecione uma empresa...</option>
+            </select>
+
+        </div>
+            
             <div class="campo largura-total">
 
                 <label>Razão social</label>
@@ -651,6 +668,137 @@ button {
 
 <script>
 
+let empresas = [];
+
+async function carregarEmpresas() {
+    const resposta = await fetch(
+        "https://valore-contratos-backend.onrender.com/api/empresas"
+    );
+
+    if (!resposta.ok) {
+        throw new Error("Não foi possível carregar as empresas.");
+    }
+
+    empresas = await resposta.json();
+
+    const selects = [
+        document.getElementById("mutuante_empresa"),
+        document.getElementById("mutuaria_empresa")
+    ];
+
+    selects.forEach(function(select) {
+
+        if (!select) return;
+
+        select.innerHTML =
+            '<option value="">Selecione uma empresa...</option>';
+
+        empresas.forEach(function(empresa) {
+
+            const option = document.createElement("option");
+
+            option.value = empresa.id;
+
+            option.textContent =
+                empresa.razao_social + " — " + empresa.cnpj;
+
+            select.appendChild(option);
+        });
+    });
+
+    // Valore fica selecionada automaticamente como Mutuante
+    const valore = empresas.find(function(empresa) {
+        return empresa.cnpj === "42.774.277/0001-11";
+    });
+
+    if (valore) {
+        document.getElementById("mutuante_empresa").value =
+            String(valore.id);
+
+        preencherEmpresa("mutuante", valore);
+    }
+}
+
+
+function preencherEmpresa(tipo, empresa) {
+
+    document.getElementById(tipo + "_nome").value =
+        empresa.razao_social || "";
+
+    document.getElementById(tipo + "_cnpj").value =
+        empresa.cnpj || "";
+
+    if (tipo === "mutuante") {
+        document.getElementById("mutuante_nire").value =
+            empresa.nire || "";
+    }
+
+    document.getElementById(tipo + "_logradouro").value =
+        empresa.logradouro || "";
+
+    document.getElementById(tipo + "_numero").value =
+        empresa.numero || "";
+
+    document.getElementById(tipo + "_complemento").value =
+        empresa.complemento || "";
+
+    document.getElementById(tipo + "_bairro").value =
+        empresa.bairro || "";
+
+    document.getElementById(tipo + "_cidade").value =
+        empresa.cidade || "";
+
+    document.getElementById(tipo + "_uf").value =
+        empresa.uf || "";
+}
+
+
+function selecionarEmpresa(tipo, selectId) {
+
+    const id = Number(
+        document.getElementById(selectId).value
+    );
+
+    const empresa = empresas.find(function(empresa) {
+        return empresa.id === id;
+    });
+
+    if (empresa) {
+        preencherEmpresa(tipo, empresa);
+    }
+}
+
+
+document
+    .getElementById("mutuante_empresa")
+    .addEventListener("change", function() {
+
+        selecionarEmpresa(
+            "mutuante",
+            "mutuante_empresa"
+        );
+
+    });
+
+
+document
+    .getElementById("mutuaria_empresa")
+    .addEventListener("change", function() {
+
+        selecionarEmpresa(
+            "mutuaria",
+            "mutuaria_empresa"
+        );
+
+    });
+
+
+carregarEmpresas().catch(function(erro) {
+    console.error(erro);
+});
+
+
+function limparFormulario() {
 
 function limparFormulario() {
     const fixos = {
