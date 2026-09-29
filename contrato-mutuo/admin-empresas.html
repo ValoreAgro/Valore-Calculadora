@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administração de Empresas - Valore Agro</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5f7;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header img {
+            max-width: 180px;
+            max-height: 70px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px 40px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitulo {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .largura-total {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .botoes {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: 0;
+            border-radius: 7px;
+            padding: 11px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-principal {
+            background: #1f2937;
+            color: white;
+        }
+
+        .btn-secundario {
+            background: #e5e7eb;
+            color: #222;
+        }
+
+        .btn-editar {
+            background: #e5e7eb;
+            color: #222;
+            padding: 8px 12px;
+        }
+
+        .btn-excluir {
+            background: #b91c1c;
+            color: white;
+            padding: 8px 12px;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mensagem {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 7px;
+            display: none;
+        }
+
+        .sucesso {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .erro {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #f3f4f6;
+        }
+
+        .acoes {
+            white-space: nowrap;
+        }
+
+        .status {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .largura-total {
+                grid-column: auto;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                display: none;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <img src="logo-valore.png" alt="Valore Agro">
+
+</header>
+
+
+<div class="container">
+
+    <h1>Administração de Empresas</h1>
+
+    <div class="subtitulo">
+        Cadastro e manutenção das empresas utilizadas nos contratos.
+    </div>
+
+
+    <!-- CHAVE ADMINISTRATIVA -->
+
+    <div class="card">
+
+        <h2>Acesso administrativo</h2>
+
+        <div class="campo">
+
+            <label>Chave administrativa</label>
+
+            <input
+                type="password"
+                id="chave_admin"
+                placeholder="Digite a chave administrativa"
+            >
+
+        </div>
+
+        <div class="botoes">
+
+            <button
+                class="btn-principal"
+                onclick="entrarAdministracao()"
+            >
+                ENTRAR
+            </button>
+
+        </div>
+
+        <div id="mensagemAcesso" class="mensagem"></div>
+
+    </div>
+
+
+    <!-- CADASTRO -->
+
+    <div class="card">
+
+        <h2 id="tituloFormulario">Cadastrar empresa</h2>
+
+        <div class="grid">
+
+            <div class="campo largura-total">
+
+                <label>Razão social *</label>
+
+                <input
+                    type="text"
+                    id="razao_social"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>CNPJ *</label>
+
+                <input
+                    type="text"
+                    id="cnpj"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>NIRE</label>
+
+                <input
+                    type="text"
+                    id="nire"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Logradouro</label>
+
+                <input
+                    type="text"
+                    id="logradouro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Número</label>
+
+                <input
+                    type="text"
+                    id="numero"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Complemento</label>
+
+                <input
+                    type="text"
+                    id="complemento"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Bairro</label>
+
+                <input
+                    type="text"
+                    id="bairro"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>Cidade</label>
+
+                <input
+                    type="text"
+                    id="cidade"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>UF</label>
+
+                <input
+                    type="text"
+                    id="uf"
+                    maxlength="2"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="botoes">
+
+            <button
+                class="btn-principal"
+                id="btnSalvar"
+                onclick="salvarEmpresa()"
+            >
+                CADASTRAR EMPRESA
+            </button>
+
+            <button
+                class="btn-secundario"
+                onclick="limparFormulario()"
+            >
+                LIMPAR
+            </button>
+
+        </div>
+
+
+        <div id="mensagemFormulario" class="mensagem"></div>
+
+    </div>
+
+
+    <!-- LISTA -->
+
+    <div class="card">
+
+        <h2>Empresas cadastradas</h2>
+
+        <div class="botoes">
+
+            <button
+                class="btn-secundario"
+                onclick="carregarEmpresas()"
+            >
+                ATUALIZAR LISTA
+            </button>
+
+        </div>
+
+        <div id="statusLista" class="status">
+            Carregando empresas...
+        </div>
+
+        <div style="overflow-x:auto;">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Razão social</th>
+                        <th>CNPJ</th>
+                        <th>Cidade/UF</th>
+                        <th>Ações</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="tabelaEmpresas"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API = "https://valore-contratos-backend.onrender.com";
+
+let chaveAdmin = "";
+let empresas = [];
+let empresaEditando = null;
+
+
+/* =========================================================
+   MENSAGENS
+========================================================= */
+
+function mostrarMensagem(elemento, texto, tipo) {
+
+    elemento.textContent = texto;
+
+    elemento.className = "mensagem " + tipo;
+
+    elemento.style.display = "block";
+
+}
+
+
+function esconderMensagem(elemento) {
+
+    elemento.style.display = "none";
+
+}
+
+
+/* =========================================================
+   ACESSO ADMINISTRATIVO
+========================================================= */
+
+async function entrarAdministracao() {
+
+    const chave = document.getElementById("chave_admin").value.trim();
+
+    if (!chave) {
+
+        mostrarMensagem(
+            document.getElementById("mensagemAcesso"),
+            "Digite a chave administrativa.",
+            "erro"
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const resposta = await fetch(API + "/api/empresas");
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Não foi possível acessar o servidor."
+            );
+
+        }
+
+        chaveAdmin = chave;
+
+        esconderMensagem(
+            document.getElementById("mensagemAcesso")
+        );
+
+        await carregarEmpresas();
+
+        mostrarMensagem(
+            document.getElementById("mensagemAcesso"),
+            "Acesso administrativo liberado.",
+            "sucesso"
+        );
+
+    } catch (erro) {
+
+        mostrarMensagem(
+            document.getElementById("mensagemAcesso"),
+            erro.message,
+            "erro"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CARREGAR EMPRESAS
+========================================================= */
+
+async function carregarEmpresas() {
+
+    const status =
+        document.getElementById("statusLista");
+
+    status.textContent = "Carregando empresas...";
+
+
+    try {
+
+        const resposta =
+            await fetch(API + "/api/empresas");
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                "Não foi possível carregar as empresas."
+            );
+
+        }
+
+
+        empresas = await resposta.json();
+
+        montarTabela();
+
+
+        status.textContent =
+            empresas.length +
+            (empresas.length === 1
+                ? " empresa cadastrada."
+                : " empresas cadastradas.");
+
+
+    } catch (erro) {
+
+        status.textContent =
+            "Erro: " + erro.message;
+
+    }
+
+}
+
+
+/* =========================================================
+   MONTAR TABELA
+========================================================= */
+
+function montarTabela() {
+
+    const tabela =
+        document.getElementById("tabelaEmpresas");
+
+    tabela.innerHTML = "";
+
+
+    empresas.forEach(function(empresa) {
+
+        const tr =
+            document.createElement("tr");
+
+
+        tr.innerHTML = `
+
+            <td>${escapeHtml(empresa.razao_social)}</td>
+
+            <td>${escapeHtml(empresa.cnpj)}</td>
+
+            <td>
+                ${escapeHtml(empresa.cidade || "")}
+                ${empresa.uf ? " / " + escapeHtml(empresa.uf) : ""}
+            </td>
+
+            <td class="acoes">
+
+                <button
+                    class="btn-editar"
+                    onclick="editarEmpresa(${empresa.id})"
+                >
+                    EDITAR
+                </button>
+
+                <button
+                    class="btn-excluir"
+                    onclick="excluirEmpresa(${empresa.id})"
+                >
+                    EXCLUIR
+                </button>
+
+            </td>
+
+        `;
+
+
+        tabela.appendChild(tr);
+
+    });
+
+}
+
+
+/* =========================================================
+   CADASTRAR / EDITAR
+========================================================= */
+
+async function salvarEmpresa() {
+
+    if (!chaveAdmin) {
+
+        alert(
+            "Primeiro informe a chave administrativa e clique em ENTRAR."
+        );
+
+        return;
+
+    }
+
+
+    const dados = obterDadosFormulario();
+
+
+    if (!dados.razao_social || !dados.cnpj) {
+
+        mostrarMensagem(
+            document.getElementById("mensagemFormulario"),
+            "Razão social e CNPJ são obrigatórios.",
+            "erro"
+        );
+
+        return;
+
+    }
+
+
+    const botao =
+        document.getElementById("btnSalvar");
+
+    botao.disabled = true;
+
+
+    try {
+
+        let resposta;
+
+
+        if (empresaEditando) {
+
+            resposta = await fetch(
+                API + "/api/empresas/" + empresaEditando,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Admin-Key": chaveAdmin
+                    },
+
+                    body: JSON.stringify(dados)
+                }
+            );
+
+        } else {
+
+            resposta = await fetch(
+                API + "/api/empresas",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Admin-Key": chaveAdmin
+                    },
+
+                    body: JSON.stringify(dados)
+                }
+            );
+
+        }
+
+
+        const resultado =
+            await resposta.json();
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                resultado.erro ||
+                "Erro ao salvar empresa."
+            );
+
+        }
+
+
+        mostrarMensagem(
+            document.getElementById("mensagemFormulario"),
+
+            empresaEditando
+                ? "Empresa alterada com sucesso."
+                : "Empresa cadastrada com sucesso.",
+
+            "sucesso"
+        );
+
+
+        limparFormulario();
+
+        await carregarEmpresas();
+
+
+    } catch (erro) {
+
+        mostrarMensagem(
+            document.getElementById("mensagemFormulario"),
+            erro.message,
+            "erro"
+        );
+
+    } finally {
+
+        botao.disabled = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   EDITAR
+========================================================= */
+
+function editarEmpresa(id) {
+
+    const empresa =
+        empresas.find(function(item) {
+
+            return item.id === id;
+
+        });
+
+
+    if (!empresa) {
+
+        return;
+
+    }
+
+
+    empresaEditando = id;
+
+
+    document.getElementById("tituloFormulario")
+        .textContent = "Editar empresa";
+
+
+    document.getElementById("btnSalvar")
+        .textContent = "SALVAR ALTERAÇÕES";
+
+
+    preencherFormulario(empresa);
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   EXCLUIR
+========================================================= */
+
+async function excluirEmpresa(id) {
+
+    if (!chaveAdmin) {
+
+        alert(
+            "Primeiro informe a chave administrativa."
+        );
+
+        return;
+
+    }
+
+
+    const empresa =
+        empresas.find(function(item) {
+
+            return item.id === id;
+
+        });
+
+
+    if (!empresa) {
+
+        return;
+
+    }
+
+
+    const confirmou =
+        confirm(
+            "Tem certeza que deseja excluir a empresa:\n\n" +
+            empresa.razao_social +
+            "\n" +
+            empresa.cnpj
+        );
+
+
+    if (!confirmou) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const resposta =
+            await fetch(
+                API + "/api/empresas/" + id,
+                {
+                    method: "DELETE",
+
+                    headers: {
+                        "X-Admin-Key": chaveAdmin
+                    }
+                }
+            );
+
+
+        const resultado =
+            await resposta.json();
+
+
+        if (!resposta.ok) {
+
+            throw new Error(
+                resultado.erro ||
+                "Erro ao excluir empresa."
+            );
+
+        }
+
+
+        if (empresaEditando === id) {
+
+            limparFormulario();
+
+        }
+
+
+        await carregarEmpresas();
+
+
+        alert("Empresa excluída com sucesso.");
+
+
+    } catch (erro) {
+
+        alert(
+            "Erro: " + erro.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
+function obterDadosFormulario() {
+
+    return {
+
+        razao_social:
+            document.getElementById("razao_social").value.trim(),
+
+        cnpj:
+            document.getElementById("cnpj").value.trim(),
+
+        nire:
+            document.getElementById("nire").value.trim(),
+
+        logradouro:
+            document.getElementById("logradouro").value.trim(),
+
+        numero:
+            document.getElementById("numero").value.trim(),
+
+        complemento:
+            document.getElementById("complemento").value.trim(),
+
+        bairro:
+            document.getElementById("bairro").value.trim(),
+
+        cidade:
+            document.getElementById("cidade").value.trim(),
+
+        uf:
+            document.getElementById("uf").value.trim().toUpperCase()
+
+    };
+
+}
+
+
+function preencherFormulario(empresa) {
+
+    document.getElementById("razao_social").value =
+        empresa.razao_social || "";
+
+    document.getElementById("cnpj").value =
+        empresa.cnpj || "";
+
+    document.getElementById("nire").value =
+        empresa.nire || "";
+
+    document.getElementById("logradouro").value =
+        empresa.logradouro || "";
+
+    document.getElementById("numero").value =
+        empresa.numero || "";
+
+    document.getElementById("complemento").value =
+        empresa.complemento || "";
+
+    document.getElementById("bairro").value =
+        empresa.bairro || "";
+
+    document.getElementById("cidade").value =
+        empresa.cidade || "";
+
+    document.getElementById("uf").value =
+        empresa.uf || "";
+
+}
+
+
+function limparFormulario() {
+
+    empresaEditando = null;
+
+
+    document.getElementById("tituloFormulario")
+        .textContent = "Cadastrar empresa";
+
+
+    document.getElementById("btnSalvar")
+        .textContent = "CADASTRAR EMPRESA";
+
+
+    document.querySelectorAll(
+        "#razao_social, #cnpj, #nire, #logradouro, #numero, #complemento, #bairro, #cidade, #uf"
+    ).forEach(function(campo) {
+
+        campo.value = "";
+
+    });
+
+}
+
+
+/* =========================================================
+   SEGURANÇA PARA EXIBIÇÃO DOS DADOS
+========================================================= */
+
+function escapeHtml(valor) {
+
+    return String(valor ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   INÍCIO
+========================================================= */
+
+carregarEmpresas();
+
+</script>
+
+</body>
+</html>
